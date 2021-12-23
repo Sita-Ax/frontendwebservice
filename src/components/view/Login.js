@@ -3,7 +3,7 @@ import {useHistory, NavLink} from "react-router-dom";
 import UserService from "../service/UserService";
 
 const Login = (props) => {
-    const [user, setUser] = useState({username: "", password: "", user: "token"});
+    const [user, setUser] = useState({username: "", password: ""});
     const [loading, setLoading] = useState(false);
     const history = useHistory();
 
@@ -12,22 +12,20 @@ const Login = (props) => {
         return () => clearTimeout(timerId);
     }, [loading]);
 
-    const loginUsers = async (credentials) => {
-        const data = await UserService.loginUser(credentials);
-        console.log(data);
+    const loginUsers = async (user) => {
+        const data = await UserService.loginUser(user.username, user.password);
         if (data !== "error") {
             props.setToken(data);
             props.setLogin(true);
-            props.setUsername(user.username);
-            console.log(props.token + " data " + data)
+            props.setUsername(user.username)
         } else {
             setLoading(true);
         }
     };
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        if (!user.username || !user.password) return;
+        e.preventDefault()
+        if (!user.username || !user.password) return alert("Nothing here!");
         await loginUsers(user);
         history.push("/Post");
     };
@@ -35,6 +33,7 @@ const Login = (props) => {
     const changeUserData = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
     };
+    console.log(props.login + " data " + " user " + user.username + " userprops " + props.token + " data " + props.data)
 
     return (
         <>
@@ -48,15 +47,16 @@ const Login = (props) => {
                     margin: "auto"
                 }} onSubmit={handleLogin}>
                     <h3>{loading ? "Loading..." : "Login here"}</h3>
-                    <input type="text" name="username" value={user.username || ""} placeholder="Username"
+                    <input type="text" name="username" value={user.username} placeholder="Username"
                            style={{background: "white", width: "flex", borderRadius: "10px", height: "20px"}}
                            onChange={changeUserData} required/>
-                    <input type="password" name="password" value={user.password || ""} placeholder="Password"
+                    <input type="password" name="password" value={user.password} placeholder="Password"
                            style={{background: "white", width: "flex", borderRadius: "10px", height: "20px"}}
                            onChange={changeUserData} required autoComplete="off"/>
                     <br/>
                     <button type="submit" style={{background: "red", borderRadius: "10px"}}>Login</button>
-                    <NavLink to={"/Register"}><p style={{color: "white", paddingBottom: "30px", marginTop: "20px"}}>If
+                    <NavLink to={"/Register"}><p
+                        style={{color: "white", paddingBottom: "30px", marginTop: "20px"}}>If
                         you not have an account click here to register!</p></NavLink>
                 </form>
             </div>

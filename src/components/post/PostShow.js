@@ -53,7 +53,7 @@ const PostShow = (props) => {
     }
     const searchPost = async () => {
         const data = await PostService.getPost(props);
-        if(data !== "error"){
+        if (data !== "error") {
             await getAllPost(props.info)
         }
     }
@@ -63,11 +63,11 @@ const PostShow = (props) => {
 
     const createFavorites = async (post) => {
         const data = await PostService.addFavorites(post.title);
-            setFavorites(data);
-            await getFavorites();
-            alert("This post is your favorite Title:" + post.title + " Content: " + post.content + " Made by: " + props.username);
-            alert("No post inside!");
-            setLoading(true);
+        setFavorites(data);
+        await getFavorites();
+        alert("This post is your favorite Title:" + post.title + " Content: " + post.content + " Made by: " + props.username);
+        alert("No post inside!");
+        setLoading(true);
     }
 
     const getFavorites = async (props) => {
@@ -85,8 +85,10 @@ const PostShow = (props) => {
     return (
         <>
             <div className="searchPost">
-                <form onSubmit={searchPost}><input type="text" onChange={changeData} style={{width: "flex", borderRadius: "30px", height: "flex"}}/>
-                <input type="button" value="Search" style={{background: "red", width: "flex", borderRadius: "30px", height: "flex"}} /></form>
+                <form onSubmit={searchPost}><input type="text" onChange={changeData}
+                                                   style={{width: "flex", borderRadius: "30px", height: "flex"}}/>
+                    <input type="button" value="Search"
+                           style={{background: "red", width: "flex", borderRadius: "30px", height: "flex"}}/></form>
             </div>
             <div className="getAllPost" style={{padding: '80px', background: 'yellow'}}>
                 <h1>Look on all posts!</h1>
@@ -94,7 +96,7 @@ const PostShow = (props) => {
                     <ul>
                         {posts.map((post, index) =>
                             (<li key={index}>
-                                    <div>Made by: {props.username}</div>
+                                    <div>Made by: {post.username}</div>
                                     Title: {post.title} | Content: {post.content} | Category: {post.category}
                                 </li>
                             )

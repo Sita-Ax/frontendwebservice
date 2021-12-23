@@ -14,18 +14,17 @@ const Post = (props) => {
         return () => clearTimeout(timerId);
     }, [loading]);
 
-    console.log(props.token)
     const changePostInfo = (e) => {
         console.log("Post 21 ")
         setPost({...post, [e.target.name]: e.target.value});
     };
 
-    const createNewPost = () => {
+    const createNewPost = async () => {
         if (props.data === true) {
             if (post.title === "" || post.content === "" || post.category === "") {
                 alert("you need to insert something in title or text!")
             } else
-                PostService.createPost(props.token, post.id, post.title, post.content, props.username, post.category).then(res => res.valueOf())
+                await PostService.createPost(props.token, post.id, post.title, post.content, post.category, props.username)
         }
         console.log(props.data + " Post create 31 " + props.token + props.username + post.title + post.content + post.category)
     };
@@ -46,13 +45,11 @@ const Post = (props) => {
     }, [post.title]);
 
     const handlePost = (e) => {
-        console.log("Post 90 " + post.title)
         e.preventDefault();
-        if (!post.title || !post.content || !props.username || !post.category) return;
-        const newP = PostService.createPost(props.token, post.id, post.title, post.content, props.username, post.category)
-        alert("Created a post. " + post.id + " Title: " + post.title + " Category: " + post.category + " Content: " + post.content + " By: " + props.username);
+        if (!post.title || !post.content || !post.category || !props.username) return;
+        const newPost = PostService.createPost(props.token, post.id, post.title, post.content, post.category, props.username)
+        alert("Created a post. Title: " + post.title + " Category: " + post.category + " Content: " + post.content + " By: " + props.username);
         getAllPost();
-        console.log(newP + " new " + post)
     };
 
     const updatePostHandler = async () => {
@@ -63,7 +60,6 @@ const Post = (props) => {
     const handleShow = async (e) => {
         e.preventDefault();
         await getAllPost();
-        console.log("Show " + post.title)
         history.push("/PostShow");
     };
 
@@ -74,7 +70,7 @@ const Post = (props) => {
                 <div>
                     <ul>
                         {post.map((posts, index) => {
-                            return (<li key={index} >
+                            return (<li key={index}>
                                 <div>By: {posts.username}</div>
                                 Title: {posts.title} <br/> Description: {posts.content}
                             </li>);
@@ -93,23 +89,35 @@ const Post = (props) => {
                 color: "green",
             }}>
                 <ul>{posts.map((post, index) => {
-                    return (
-                        <li key={index}><strong>Title:</strong> {post.title} | <strong>Content:</strong> {post.content} | <strong>Category:</strong> {post.category} |
-                            <strong>Username:</strong> {props.username}  <button onClick={() => {
-                                fetch('http://localhost:8080/post/delete/' + post.title, {
-                                    method: 'DELETE',
-                                    headers:{
-                                        "Content-Type":"application/json",
-                                        "token": props.token,
-                                        "username": props.username
-                                    }
+                    if (post.username === props.username) {
+                        return (
+                            <li key={index}>
+                                <strong>Title:</strong> {post.title} | <strong>Content:</strong> {post.content} | <strong>Category:</strong> {post.category} |
+                                <strong>Username:</strong> {post.username}
+                                <button onClick={() => {
+                                    fetch('http://localhost:8080/post/delete/' + post.title, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "token": props.token,
+                                            "username": props.username
+                                        }
 
-                                }).then(response => {
-                                    getAllPost();
-                                });
-                            }} style={{background: "#33CCFF", borderRadius: "10px"}}>Delete</button></li>
-                    )
+                                    }).then(response => {
+                                        getAllPost();
+                                    });
+                                }} style={{background: "#33CCFF", borderRadius: "10px"}}>Delete
+                                </button>
+                            </li>
+                        )
+                    }
+                    return (
+                        <li key={index}>
+                            <strong>Title:</strong> {post.title} | <strong>Content:</strong> {post.content} | <strong>Category:</strong> {post.category} |
+                            <strong>Username:</strong> {post.username}
+                        </li>)
                 })}</ul>
+
                 {/*<h2>Category: {posts.category} </h2><h2>Title: {posts.title} </h2><h2> Content: {posts.content}</h2>*/}
                 <h3>Welcome {props.username} !</h3>
                 <form onSubmit={handlePost} style={{

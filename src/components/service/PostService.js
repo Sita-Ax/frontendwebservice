@@ -1,6 +1,6 @@
 const url = "http://localhost:8080/post";
 const PostService = {
-        createPost: async (token, id, title, content, username, category) => {
+        createPost: async (token, id, title, content, category, username) => {
             const res = await fetch(url + "/create", {
                 method: "PUT",
                 headers: {
@@ -11,8 +11,8 @@ const PostService = {
                     id: title,
                     title: title,
                     content: content,
-                    username: username,
                     category: category,
+                    username: username,
                 })
             })
             if (res.status === 200) {

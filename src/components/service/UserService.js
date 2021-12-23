@@ -14,35 +14,28 @@ const UserService = {
                 }),
             });
             const data = await res.text();
-            console.log(data + " register -> Userservice" + data.toString());
+            console.log(user.username + " register -> Userservice" + data.toString());
             return data;
         } catch (error) {
             return {error: error};
         }
     },
-    loginUser: async (credentials) => {
+    loginUser: async (username, password) => {
         try {
             const res = await fetch(url + "/login", {
                 method: "POST",
                 responseType: "text",
                 headers: {
                     "Content-Type": "application/json",
-                    username: credentials.username,
-                    password: credentials.password,
+                    username: username,
+                    password: password,
                 },
-            });
-            // if(res.status === 200){
-            //     login(true)
-            //     return await res.text();
-            // }else {
-            //     login(false);
-            //     return alert("Wrong")
-            // }
+            })
             const data = await res.text();
-            console.log(data.toString() + " authenticated -> userservice");
+            console.log(password + " authenticated -> userservice ");
             return data === "" ? "error" : data;
         } catch (error) {
-            return {error: error};
+            return "error";
         }
     },
     logout: async (token) => {

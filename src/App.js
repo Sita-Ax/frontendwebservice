@@ -17,7 +17,8 @@ function App() {
         const data = UserService.logout(props.username, props.token);
         setLogin(false);
         setToken('');
-        alert("Logout " + props.username + props.token);
+        setUsername('')
+        alert("Logged out! ");
     };
 
     if (login === false) {
@@ -72,7 +73,7 @@ function App() {
                                                            setLogin={setLogin}/>}/>
                             <Route exact path="/Post"
                                    component={() => <Post setToken={setToken} token={token} username={username}
-                                                          login={login}/>} />
+                                                          login={login}/>}/>
                             <Route exact path="/PostShow"
                                    component={() => <PostShow username={username} setUsername={setUsername}
                                                               login={login}

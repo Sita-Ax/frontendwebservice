@@ -18,12 +18,13 @@ const Register = () => {
     };
 
     const registerUser = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const data = await UserService.registerUser(user);
         if (data !== "error") {
             if (user.username === user.password === user.repassword) {
                 setUser(user + data, true);
             }
+            alert(user.username + " is registered here. ")
             history.push("/Login");
         } else {
             alert(error)
