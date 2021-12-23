@@ -14,7 +14,6 @@ const Login = (props) => {
 
     const loginUsers = async (user) => {
         const data = await UserService.loginUser(user.username, user.password);
-
         if (data !== "error") {
             props.setToken(data);
             props.setLogin(true);
@@ -39,7 +38,6 @@ const Login = (props) => {
     const changeUserData = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
     };
-    console.log(props.login + " data " + " user " + user.username + " userprops " + props.token + " data " + props.data)
 
     return (
         <>

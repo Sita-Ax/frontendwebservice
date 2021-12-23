@@ -15,7 +15,6 @@ const Post = (props) => {
     }, [loading]);
 
     const changePostInfo = (e) => {
-        console.log("Post 21 ")
         setPost({...post, [e.target.name]: e.target.value});
     };
 
@@ -26,11 +25,10 @@ const Post = (props) => {
             } else
                 await PostService.createPost(props.token, post.id, post.title, post.content, post.category, props.username)
         }
-        console.log(props.data + " Post create 31 " + props.token + props.username + post.title + post.content + post.category)
+        console.log(" Post create 31 token: " + props.token + " username: " + props.username + " title: " + post.title + " content: " + post.content + " category: " + post.category)
     };
 
     async function getAllPost() {
-        console.log("GETALL")
         await fetch('http://localhost:8080/post/all', {
             method: "GET"
         })
@@ -64,7 +62,6 @@ const Post = (props) => {
     };
 
     if (props.login === false) {
-        console.log("Post 122 ")
         return (
             <div>
                 <div>
@@ -80,7 +77,6 @@ const Post = (props) => {
             </div>
         )
     } else {
-        console.log(props.token + " Post 139 " + props.post + " user: " + props.user + " username " + props.username)
         return (
             <div className="post" style={{
                 width: "flex",
