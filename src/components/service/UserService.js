@@ -31,9 +31,13 @@ const UserService = {
                     password: password,
                 },
             })
-            const data = await res.text();
-            console.log(password + " authenticated -> userservice ");
-            return data === "" ? "error" : data;
+            if(res.status === 200) {
+                const data = await res.text();
+                console.log(password + " authenticated -> userservice ");
+                return data === "" ? "error" : data;
+            }else {
+                return "error"
+            }
         } catch (error) {
             return "error";
         }

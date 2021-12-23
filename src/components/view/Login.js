@@ -14,6 +14,7 @@ const Login = (props) => {
 
     const loginUsers = async (user) => {
         const data = await UserService.loginUser(user.username, user.password);
+
         if (data !== "error") {
             props.setToken(data);
             props.setLogin(true);
@@ -27,7 +28,12 @@ const Login = (props) => {
         e.preventDefault()
         if (!user.username || !user.password) return alert("Nothing here!");
         await loginUsers(user);
-        history.push("/Post");
+        if(props.login === true) {
+            alert(" you are logged in ")
+            history.push("/Post");
+        }else{
+            setLoading(true);
+        }
     };
 
     const changeUserData = (e) => {
